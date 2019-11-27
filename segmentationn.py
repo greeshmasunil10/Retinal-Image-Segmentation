@@ -84,7 +84,6 @@ for sigma_x in list_xy:
     max_filenum = 0
     maxlist = []
     imglist = []
-    filenumlist = []
            
     for freq_z in list_freq:
             
@@ -99,33 +98,10 @@ for sigma_x in list_xy:
             B = B * B
             C = A + B
             output_val = np.sqrt(C)
-            #mean_out = np.mean(output_val[:])
             output_val = (output_val - np.mean(output_val))/np.std(output_val)
-            #A = np.array([-1, -0.05, -0.6, 0.3, 0.7, 1])
-            out = np.zeros(output_val.shape, np.double)
             maxlist.append(output_val)
-            filenumlist.append(file_num)
-            
-            normalized = cv2.normalize(output_val, out, 0, 1, cv2.NORM_MINMAX, dtype=cv2.CV_64F)
-            normalized_out = normalized * 255
-            
-            det_log = np.linalg.slogdet(output_val)
                        
-#            print('Image num '+str(file_num)+' sigma_x: ' + str(sigma_x) + ' Theta_x: ' + str(angle_y) + ' Freq-x ' + str(freq_z)+ ' det: '+str(det_log[1]))
-            output_img = np.uint8(normalized_out)
-            imglist.append(output_img)
-            plt.imshow(output_img, cmap = 'gray')
-            
-            #df['Gabor'+str(file_num)] = output_img.reshape(-1)
 
-            
-# =============================================================================
-#             filename = 'Image' + str(file_num) + '.png'
-# =============================================================================
-            file_num += 1
-# =============================================================================
-#             plt.savefig(filename)
-# =============================================================================
     check= maxlist[0]
     for it in maxlist:
         maxout= np.maximum(check,it)
@@ -205,8 +181,8 @@ plt.show()
 
 from sklearn.metrics import confusion_matrix
 cf_matrix = confusion_matrix(Y_test, prediction_test)
-
 prediction_test[prediction_test > 0] = 255
+
 
 Y_train.shape = (159613, 1)
 prediction_test.shape = (159612, 1)
@@ -216,10 +192,11 @@ list_test_final = np.vstack((Y_train, prediction_test))
 list_test_img = list_test_final.reshape(height,height)
 #list_test_img = cv2.bitwise_not(list_test_img)
 plt.imshow(list_test_img, cmap = 'gray')
+Y_test[Y_test > 0] = 255
 #print(Y_test)
 #print(prediction_test)
-for it in range(len(Y_test)):
-    print(Y_test[it],":",prediction_test[it])
+#for it in range(len(Y_test)):
+#    print(Y_test[it],":",prediction_test[it])
 from sklearn import metrics
 print('Acuracy is', metrics.accuracy_score(Y_test, prediction_test))
 print('Precision is', metrics.precision_score(Y_test, prediction_test, average="micro"))
