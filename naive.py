@@ -18,7 +18,6 @@ global cf_matrix
 global Y_train,green_img
 
 def apply_wavelet_transform( sigma, theta, freq):
-    
     filter_size = 10
     filter_half_size = int(filter_size / 2)
     [x, y] = np.meshgrid(range(-filter_half_size , filter_half_size+1), range(-filter_half_size , filter_half_size+1))
@@ -42,7 +41,7 @@ def controller():
 #    for i in range(20):
 #        feature_extraction(i)
     feature_extraction(choice)
-#    naive_bayes_classifier()
+    naive_bayes_classifier()
     """Containns few logical errors  but works fine"""
     # Read an Image
     end= time.time()
@@ -162,11 +161,11 @@ def feature_extraction(choice) :
     #new_xtrain = sc.fit_transform(X_train)
     #new_x_test = sc.transform(X_test)
     ##
-#    from sklearn.ensemble import RandomForestClassifier
-#    model = RandomForestClassifier(n_estimators = 10, random_state = 42)
+    from sklearn.ensemble import RandomForestClassifier
+    model = RandomForestClassifier(n_estimators = 10, random_state = 42)
     
-    from sklearn.neighbors import KNeighborsClassifier
-    model = KNeighborsClassifier(n_neighbors=3)
+#    from sklearn.neighbors import KNeighborsClassifier
+#    model = KNeighborsClassifier(n_neighbors=3)
     
     #
 #    from sklearn.naive_bayes import GaussianNB
@@ -279,5 +278,9 @@ def naive_bayes_classifier():
     plt.imshow(predicted_image, cmap = 'gray')
     Y_test[Y_test > 0] = 255
     print('Acuracy is', metrics.accuracy_score(Y_test, predicted_data))
+
+def RandomForestClassifier():
+    
+
 
 controller()
